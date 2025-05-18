@@ -1,4 +1,5 @@
 import aiohttp
+import json
 import os
 import random
 from aiohttp import web
@@ -36,6 +37,10 @@ async def middleware(request: web.Request, handler):
     return resp
 
 
+async def health_handler(request: web.Request) -> web.Response:
+    return web.Response(body=json.dumps({"status": True}), status=200)
+
+
 async def proxy_handler(request: web.Request):
     method = (request.method).lower()
     req = app["client_session"].__getattribute__(method)
@@ -45,7 +50,8 @@ async def proxy_handler(request: web.Request):
 
 app = web.Application(middlewares=[middleware])
 app.cleanup_ctx.append(client_session)
-app.add_routes([web.route("*", r"/{tail:.*}", proxy_handler)])
+app.add_routes([web.route("*", r"/{tail:.*}", proxy_handler),
+                web.route("get", r"/health", health_handler),])
 
 
 if __name__ == '__main__':
