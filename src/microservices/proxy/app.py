@@ -30,6 +30,8 @@ async def middleware(request: web.Request, handler):
         rnd_v = random.random()
         if ENVS["GRADUAL_MIGRATION"] and rnd_v < ENVS["MOVIES_MIGRATION_PERCENT"]:
             new_request = request.clone(host=ENVS["MOVIES_SERVICE_URL"].replace("http://", ""))
+    elif "/api/events" in request.path:
+        new_request = request.clone(host=ENVS["EVENTS_SERVICE_URL"].replace("http://", ""))
     resp = await handler(new_request)
     return resp
 
