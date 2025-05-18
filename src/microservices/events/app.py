@@ -47,7 +47,7 @@ async def user_event_handler(request: web.Request) -> web.Response:
         "offset": msg.offset,
         "event": json.loads(msg.value),
     }
-    return web.json_response(data=resp)
+    return web.json_response(data=resp, status=201)
 
 
 async def payment_event_handler(request: web.Request) -> web.Response:
@@ -61,7 +61,7 @@ async def payment_event_handler(request: web.Request) -> web.Response:
         "offset": msg.offset,
         "event": json.loads(msg.value),
     }
-    return web.json_response(data=resp)
+    return web.json_response(data=resp, status=201)
 
 
 async def movie_event_handler(request: web.Request) -> web.Response:
@@ -75,7 +75,11 @@ async def movie_event_handler(request: web.Request) -> web.Response:
         "offset": msg.offset,
         "event": json.loads(msg.value),
     }
-    return web.json_response(data=resp)
+    return web.json_response(data=resp, status=201)
+
+
+async def health_handler(request: web.Request) -> web.Response:
+    return web.Response(body=json.dumps({"status": True}), status=200)
 
 
 app = web.Application()
@@ -83,7 +87,8 @@ app.cleanup_ctx.append(kafka_producer)
 app.cleanup_ctx.append(kafka_consumer)
 app.add_routes([web.route("post", r"/api/events/user", user_event_handler),
                 web.route("post", r"/api/events/payment", payment_event_handler),
-                web.route("post", r"/api/events/movie", movie_event_handler)])
+                web.route("post", r"/api/events/movie", movie_event_handler),
+                web.route("get", r"/api/events/health", health_handler)])
 
 
 if __name__ == '__main__':
