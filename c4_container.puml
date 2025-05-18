@@ -1,0 +1,45 @@
+@startuml
+title "CinemaAbyss" Container Diagram
+top to bottom direction
+!include <C4/C4_Container>
+
+
+Person(user, "User", "Just a user")
+
+Container(WebApp, "Web Application", "Node.js", "Handles users interactions with PC/laptop")
+Container(MobileApp, "Mobile Application", "Kotlin, Swift", "Handles users interactions with smartphone")
+Container(SmartTVApp, "SmartTV Application", "???", "Handles users interactions with SmartTV")
+
+Container_Boundary(CinemaAbyssSystem, "CinemaAbyss System") {
+  Container(api_gateway_service, "API Gateway", "???", "")
+  Container(movies_service, "Movies Service", "Go", "")
+  Container(users_service, "Users Service", "Go", "")
+  Container(payments_service, "Payments Service", "Go", "")
+  Container(subscriptions_service, "Subscriptions Service", "Go", "")
+  Container(kafka, "Kafka", "Kafka", "")
+}
+
+
+Rel(user, WebApp, "Uses the system")
+Rel(user, MobileApp, "Uses the system")
+Rel(user, SmartTVApp, "Uses the system")
+
+Rel(WebApp, api_gateway_service, "Makes API requests [JSON/HTTPS]")
+Rel(MobileApp, api_gateway_service, "Makes API requests [JSON/HTTPS]")
+Rel(SmartTVApp, api_gateway_service, "Makes API requests [JSON/HTTPS]")
+
+Rel(api_gateway_service, movies_service, "")
+Rel(api_gateway_service, users_service, "")
+Rel(api_gateway_service, payments_service, "")
+Rel(api_gateway_service, subscriptions_service, "")
+
+Rel(users_service, kafka, "")
+Rel(movies_service, kafka, "")
+Rel(payments_service, kafka, "")
+Rel(subscriptions_service, kafka, "")
+
+Rel(kafka, users_service, "")
+Rel(kafka, movies_service, "")
+Rel(kafka, payments_service, "")
+Rel(kafka, subscriptions_service, "")
+@enduml
