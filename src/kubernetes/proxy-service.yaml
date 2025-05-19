@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: proxy-service
-        image:  ghcr.io/mEssiaHofDarK/practicum_arch_sprint_2/proxy-service:latest
+        image:  ghcr.io/messiahofdark/practicum_arch_sprint_2/proxy-service:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
