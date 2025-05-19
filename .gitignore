@@ -9,6 +9,9 @@
 /vendor/
 /Godeps/
 
+# python specific
+.venv
+
 # Go workspace file
 go.work
 

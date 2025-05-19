@@ -5,7 +5,7 @@ global:
 
 # Image pull secrets
 imagePullSecrets:
-  dockerconfigjson: ewoJImF1dGhzIjogewoJCSJnaGNyLmlvIjogewoJCQkiYXV0aCI6
+  dockerconfigjson: ewoJImF1dGhzIjogewoJCSJnaGNyLmlvIjogewoJCQkiYXV0aCI6ICJiVVZ6YzJsaFNHOW1SR0Z5U3pwbmFIQmZlREZ3TmpSdE5rRlRiMFZ1UmxsbGRteHpSREpwVm5wSlVWQTVPV2h5TVVOcE0yTjUiCgkJfQoJfQp9
 # Database configuration
 database:
   host: postgres
@@ -33,7 +33,7 @@ database:
 monolith:
   enabled: true
   image:
-    repository: ghcr.io/db-exp/cinemaabysstest/monolith
+    repository: ghcr.io/messiahofdark/practicum_arch_sprint_2/monolith
     tag: latest
     pullPolicy: Always
   replicas: 1
@@ -53,19 +53,19 @@ monolith:
 proxyService:
   enabled: true
   image:
-    repository: ghcr.io/db-exp/cinemaabysstest/proxy-service
+    repository: ghcr.io/messiahofdark/practicum_arch_sprint_2/proxy-service
     tag: latest
     pullPolicy: Always
   replicas: 1
   resources:
     limits:
-      cpu: 300m
+      cpu: 200m
       memory: 256Mi
     requests:
       cpu: 100m
       memory: 128Mi
   service:
-    port: 80
+    port: 8000
     targetPort: 8000
     type: ClusterIP
 
@@ -73,7 +73,7 @@ proxyService:
 moviesService:
   enabled: true
   image:
-    repository: ghcr.io/db-exp/cinemaabysstest/movies-service
+    repository: ghcr.io/messiahofdark/practicum_arch_sprint_2/movies-service
     tag: latest
     pullPolicy: Always
   replicas: 1
@@ -93,13 +93,13 @@ moviesService:
 eventsService:
   enabled: true
   image:
-    repository: ghcr.io/db-exp/cinemaabysstest/events-service
+    repository: ghcr.io/messiahofdark/practicum_arch_sprint_2/events-service
     tag: latest
     pullPolicy: Always
   replicas: 1
   resources:
     limits:
-      cpu: 300m
+      cpu: 200m
       memory: 256Mi
     requests:
       cpu: 100m
@@ -172,7 +172,7 @@ ingress:
         - path: /
           pathType: Prefix
           service: proxy-service
-          port: 80
+          port: 8000
         - path: /api/events
           pathType: Prefix
           service: events-service
@@ -182,4 +182,4 @@ ingress:
 config:
   # Strangler Fig configuration
   gradualMigration: "true"
-  moviesMigrationPercent: "100"
+  moviesMigrationPercent: "40"
