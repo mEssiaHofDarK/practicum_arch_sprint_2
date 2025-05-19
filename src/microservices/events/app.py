@@ -45,7 +45,7 @@ async def user_event_handler(request: web.Request) -> web.Response:
         "status": "success",
         "partition": msg.partition,
         "offset": msg.offset,
-        "event": json.loads(msg.value),
+        "event": json.loads((msg.value).decode()),
     }
     return web.json_response(data=resp, status=201)
 
@@ -59,7 +59,7 @@ async def payment_event_handler(request: web.Request) -> web.Response:
         "status": "success",
         "partition": msg.partition,
         "offset": msg.offset,
-        "event": json.loads(msg.value),
+        "event": json.loads((msg.value).decode()),
     }
     return web.json_response(data=resp, status=201)
 
@@ -73,7 +73,7 @@ async def movie_event_handler(request: web.Request) -> web.Response:
         "status": "success",
         "partition": msg.partition,
         "offset": msg.offset,
-        "event": json.loads(msg.value),
+        "event": json.loads((msg.value).decode()),
     }
     return web.json_response(data=resp, status=201)
 
